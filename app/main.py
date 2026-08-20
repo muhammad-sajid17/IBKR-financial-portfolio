@@ -1,11 +1,21 @@
 import os
-from fastapi import BackgroundTasks, FastAPI, HTTPException
-from pydantic import BaseModel
-from app.engine import execute_sync
 from pathlib import Path
 from dotenv import load_dotenv
+from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from app.engine import execute_sync
 
 app = FastAPI(title="IBKR to Power BI Sync Engine", version="1.0.0")
+
+# Enable CORS for local HTML testing and web apps
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # 1. Locate the root directory (one level up from 'app/')
 BASE_DIR = Path(__file__).resolve().parent.parent
